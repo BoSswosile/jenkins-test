@@ -6,8 +6,8 @@ pipeline {
             steps {
                 git branch 'source', url: 'https://github.com/BoSswosile/jenkins-test.git'   
             }
-            
-        }
+        } // Added missing closing brace here
+        
         stage('Build Backend') {
             agent {
                 label 'docker-agent-python'
