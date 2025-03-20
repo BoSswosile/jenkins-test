@@ -1,14 +1,24 @@
 pipeline {
-    agent any
+    agent none
     stages {
-        stage('Build') {
+        stage('Checkout code') {
+            agent any
             steps {
-                echo 'Building..'
+                git branch 'source', url: 'https://github.com/BoSswosile/jenkins-test.git'   
+            }
+            
+        }
+        stage('Build Backend') {
+            agent {
+                label 'docker-agent-python'
+            }
+            steps {
+                sh 'pip install -r requirements.txt'
             }
         }
         stage('Test') {
             steps {
-                echo 'Testing..'
+                echo 'Testing....'
             }
         }
         stage('Deploy') {
