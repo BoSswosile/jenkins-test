@@ -4,9 +4,9 @@ pipeline {
         stage('Checkout code') {
             agent any
             steps {
-                git branch 'source', url: 'https://github.com/BoSswosile/jenkins-test.git'   
+                git url: 'https://github.com/BoSswosile/jenkins-test.git', branch: 'source'
             }
-        } // Added missing closing brace here
+        }
         
         stage('Build Backend') {
             agent {
