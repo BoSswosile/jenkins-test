@@ -4,7 +4,7 @@ pipeline {
         stage('Checkout code') {
             agent any
             steps {
-                git url: 'https://github.com/BoSswosile/jenkins-test.git', branch: 'source'
+                git branch: "source", url: 'https://github.com/BoSswosile/jenkins-test.git'
                 sh 'ls -R ${WORKSPACE}'
                 stash name: 'source-code', includes: '**'
             }
