@@ -7,7 +7,6 @@ pipeline {
                 git url: 'https://github.com/BoSswosile/jenkins-test.git', branch: 'source'
             }
         }
-        
         stage('Build Backend') {
             agent {
                 label 'docker-agent-python'
@@ -16,16 +15,15 @@ pipeline {
                 sh 'pip install -r back/requirements.txt'
             }
         }
-        stage('Test') {
-            
-        }
         stage('SonarQube Analysis') {
             agent any
             steps {
                 unstash 'source-code'
                 script {
                     withSonarQubeEnv('SonarQube') {
-                        sh "cd back && sonar-scanner"
+                        withSonarScanner('SonarQube') {
+                            sh "cd back && sonar-scanner"
+                        }
                     }
                 }
             }
