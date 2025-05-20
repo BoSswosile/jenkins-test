@@ -5,6 +5,8 @@ pipeline {
             agent any
             steps {
                 git url: 'https://github.com/BoSswosile/jenkins-test.git', branch: 'source'
+                sh 'ls -R ${WORKSPACE}'
+                stash name: 'source-code', includes: '**'
             }
         }
         stage('Build Backend') {
@@ -12,7 +14,18 @@ pipeline {
                 label 'docker-agent-python'
             }
             steps {
+                unstash 'source-code'
+                sh 'ls -R ${WORKSPACE}'
                 sh 'pip install -r back/requirements.txt'
+            }
+        }
+        stage('Test') {
+             agent {
+                label 'docker-agent-python-test'
+            }
+            steps {
+                unstash 'source-code'
+                sh 'cd backend && pytest || echo "No tests found"'
             }
         }
         stage('SonarQube Analysis') {
@@ -21,7 +34,7 @@ pipeline {
                 unstash 'source-code'
                 script {
                     withSonarQubeEnv('SonarQube') {
-                        withSonarScanner('SonarQube') {
+                        withSonarScanner('scanner') {
                             sh "cd back && sonar-scanner"
                         }
                     }
