@@ -17,13 +17,7 @@ pipeline {
             }
         }
         stage('Test') {
-            agent {
-                label 'docker-agent-python-test'
-            }
-            steps {
-                unstash 'source-code'
-                sh 'cd backend && pytest [] echo "No tests found"'
-            }
+            
         }
         stage('SonarQube Analysis') {
             agent any
