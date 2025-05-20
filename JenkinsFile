@@ -20,7 +20,7 @@ pipeline {
             agent {
                 label 'docker-agent-python-test'
             }
-            stage {
+            steps {
                 unstash 'source-code'
                 sh 'cd backend && pytest [] echo "No tests found"'
             }
